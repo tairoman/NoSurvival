@@ -11,8 +11,8 @@ public class Plugin_Listener implements Listener {
     @EventHandler
     public void onEntityDeathEvent(EntityDeathEvent event){
 
-        double chance = 0.5;
-        boolean willDrop = Math.random() < chance;
+        double chance = 0.3;
+        boolean willDrop;
         boolean isType;
 
         if (!(event.getEntity() instanceof Player)) {
@@ -27,6 +27,8 @@ public class Plugin_Listener implements Listener {
                     default:
                         isType = false; break;
                 }
+
+                willDrop = Math.random() < chance;
 
                 if (isType && willDrop) {
                     i.setType(Material.AIR);
