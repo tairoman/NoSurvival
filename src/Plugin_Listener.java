@@ -5,37 +5,31 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
-
 public class Plugin_Listener implements Listener {
 
     @EventHandler
     public void onEntityDeathEvent(EntityDeathEvent event){
-
-        double chance = 0.3;
-        boolean willDrop;
-        boolean isType;
 
         if (!(event.getEntity() instanceof Player)) {
 
             for (ItemStack i : event.getDrops()) {
 
                 switch (i.getType()){
+                    // Limit food drops
                     case RAW_BEEF:
                     case RAW_CHICKEN:
+                    case MUTTON:
                     case PORK:
-                        isType = true;  break;
+                        if (!Utils.random(0.5)) i.setType(Material.AIR);
+                        break;
+                    // Limit Web dropped by killed spiders
+                    case WEB:
+                        if (!Utils.random(0.3)) i.setType(Material.AIR);
+                        break;
                     default:
-                        isType = false; break;
-                }
-
-                willDrop = Math.random() < chance;
-
-                if (isType && willDrop) {
-                    i.setType(Material.AIR);
+                        break;
                 }
             }
-
-            event.getDrops().clear();
         }
     }
 }
